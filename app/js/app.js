@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import ytSearch from 'youtube-api-search';
@@ -18,19 +19,24 @@ class App extends Component {
       videos: [],
       selectedVideo: null
     };
+    this.videoSearch('react redux');
+  }
 
-    ytSearch({ key: API_KEY, term: 'React Redux' }, (videos) => {
+  videoSearch(term) {
+    ytSearch({ key: API_KEY, term }, (videos) => {
       this.setState({
-        videos: videos,
+        videos,
         selectedVideo: videos[0]
       });
     });
   }
 
   render() {
+    const videoSearch = _.debounce((term) => { this.videoSearch(term); }, 500);
+
     return (
       <div className='container'>
-        <SearchBar />
+        <SearchBar onSearchTermChange={ videoSearch } />
         <VideoDetail video={ this.state.selectedVideo } />
         <VideoList
           videos={ this.state.videos }

@@ -9,17 +9,27 @@ class SearchBar extends Component {
     };
   }
 
+  onInputChange(term) {
+    this.setState({ term });
+    this.props.onSearchTermChange(term);
+  }
+
   render() {
     return (
-      <div className='col-md-12'>
+      <div className='search-bar'>
         <input
           value={ this.state.term }
-          onChange={ e => this.setState({ term: e.target.value }) }
+          onChange={ e => this.onInputChange(e.target.value) }
         />
       </div>
     );
   }
 
+
 }
+
+SearchBar.PropTypes = {
+  onSearchTermChange: React.PropTypes.function
+};
 
 export default SearchBar;
